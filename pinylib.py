@@ -565,6 +565,7 @@ class TinychatRTCClient(object):
         _user = self.users.search(pending['handle'])
         if _user is not None:
             _user.is_waiting = True
+            self.send_chat_msg('%s is waiting in the green room' % (_user.nick))
             self.console_write(COLOR['bright_yellow'], '%s:%s is waiting in the green room.' % (_user.nick, _user.id))
         else:
             log.error('failed to find user info for green room pending user ID: %s' % pending['handle'])

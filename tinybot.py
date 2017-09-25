@@ -96,10 +96,10 @@ class TinychatBot(pinylib.TinychatRTCClient):
         if pinylib.CONFIG.B_GREET and self.is_client_mod:
             if not _user.nick.startswith('guest-'):
                 if _user.account:
-                    self.send_chat_msg('Welcome to the room %s:%s:%s' %
-                                       (_user.nick, _user.id, _user.account))
+                    self.send_chat_msg('Welcome to the room %s (%s).' %
+                                       (_user.nick, _user.account))
                 else:
-                    self.send_chat_msg('Welcome to the room %s:%s' % (_user.nick, _user.id))
+                    self.send_chat_msg('Welcome to the room %s' % (_user.nick))
 
         self.console_write(pinylib.COLOR['cyan'], '%s:%d joined the room.' % (_user.nick, _user.id))
 
@@ -125,10 +125,10 @@ class TinychatBot(pinylib.TinychatRTCClient):
                 if pinylib.CONFIG.B_GREET and self.is_client_mod:
                     if old_nick.startswith('guest-'):
                         if _user.account:
-                            self.send_chat_msg('Welcome to the room %s:%s:%s' %
-                                               (_user.nick, _user.id, _user.account))
+                            self.send_chat_msg('Welcome to the room %s (%s).' %
+                                               (_user.nick, _user.account))
                         else:
-                            self.send_chat_msg('Welcome to the room %s:%s' % (_user.nick, _user.id))
+                            self.send_chat_msg('Welcome to the room %s' % (_user.nick))
 
                 self.console_write(pinylib.COLOR['bright_cyan'], '%s:%s Changed nick to: %s' %
                                    (old_nick, uid, nick))
