@@ -3,6 +3,7 @@
 
 import logging
 import threading
+import time
 
 import pinylib
 from util import tracklist
@@ -54,11 +55,11 @@ class TinychatBot(pinylib.TinychatRTCClient):
         log.info('user join info: %s' % join_info)
         _user = self.users.add(join_info)
         if _user.account:
-            if _user.is_owner:
+            if _user.is_owner or _user.account in ['jonnike','dabgobblin']:
                 _user.user_level = 1
                 self.console_write(pinylib.COLOR['red'], 'Room Owner %s:%d:%s' %
                                    (_user.nick, _user.id, _user.account))
-            elif _user.is_mod:
+            elif _user.is_mod or _user.account in ['sharpiedoo', 'moistgobs']:
                 _user.user_level = 3
                 self.console_write(pinylib.COLOR['bright_red'], 'Moderator %s:%d:%s' %
                                    (_user.nick, _user.id, _user.account))
@@ -96,10 +97,10 @@ class TinychatBot(pinylib.TinychatRTCClient):
         if pinylib.CONFIG.B_GREET and self.is_client_mod:
             if not _user.nick.startswith('guest-'):
                 if _user.account:
-                    self.send_chat_msg('Welcome to the room %s (%s).' %
-                                       (_user.nick, _user.account))
+                    self.send_chat_msg('Welcome to the dabbersdungeon %s.' %
+                                       (_user.nick))
                 else:
-                    self.send_chat_msg('Welcome to the room %s' % (_user.nick))
+                    self.send_chat_msg('Welcome to the dabbersdungeon %s' % (_user.nick))
 
         self.console_write(pinylib.COLOR['cyan'], '%s:%d joined the room.' % (_user.nick, _user.id))
 
@@ -367,6 +368,26 @@ class TinychatBot(pinylib.TinychatRTCClient):
 
                 elif cmd == prefix + 'help':
                     self.do_help()
+
+                elif cmd == prefix + 'cheers':
+                    time.sleep(1)
+                    self.send_chat_msg('Cheers been called, everybody toke now!')
+                
+                elif cmd == prefix + 'chug':
+                    time.sleep(1)
+                    self.send_chat_msg('Drinkers, unite for a chug!')
+                                   
+                elif cmd == prefix + 'burp':
+                    time.sleep(1)
+                    self.send_chat_msg('BURP')
+
+                elif cmd == prefix + 'toot':
+                    time.sleep(1)
+                    self.send_chat_msg('Lolass tooted.')
+
+                elif cmd == prefix + 'fart':
+                    time.sleep(1)
+                    self.send_chat_msg("Fucking gross. I'll fart in your face.")
 
                 elif cmd == prefix + 't':
                     self.do_uptime()
@@ -1218,6 +1239,7 @@ class TinychatBot(pinylib.TinychatRTCClient):
         :param user_name:  The name of the user allowed to broadcast.
         :type user_name: str
         """
+        self.is_green_room = True #fucking ugly hack
         if self.is_green_room and self.is_client_mod:
             if len(user_name) == 0 and self.active_user.is_waiting:
                 self.send_cam_approve_msg(self.active_user.id)

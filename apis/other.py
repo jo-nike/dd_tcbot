@@ -30,7 +30,7 @@ def weather_search(city):
     :return: weather data str or None on no match or error.
     """
     if str(city).strip():
-        api_key = ''
+        api_key = 'dfb7aa827e7e4cb0a0822948172509'
         if not api_key:
             return 'Missing api key.'
         else:
