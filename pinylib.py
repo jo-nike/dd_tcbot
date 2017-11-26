@@ -534,8 +534,9 @@ class TinychatRTCClient(object):
         :type uid: int
         """
         _user = self.users.search(uid)
-        _user.is_broadcasting = False
-        self.console_write(COLOR['yellow'], '%s:%s stopped broadcasting.' % (_user.nick, uid))
+        if _user is not None:
+            _user.is_broadcasting = False
+            self.console_write(COLOR['yellow'], '%s:%s stopped broadcasting.' % (_user.nick, uid))
 
     def on_sysmsg(self, msg):
         """
