@@ -4,6 +4,7 @@
 import logging
 import threading
 import time
+from datetime import datetime
 
 import pinylib
 from util import tracklist
@@ -44,6 +45,7 @@ class TinychatBot(pinylib.TinychatRTCClient):
 
         # do special operations.
         threading.Thread(target=self.options).start()
+        threading.Thread(target=self.hourlyTim).start()
 
     def on_join(self, join_info):
         """
@@ -434,9 +436,11 @@ class TinychatBot(pinylib.TinychatRTCClient):
                 elif cmd == prefix + 'roll':
                     self.do_dice()
 
-                elif cmd == prefix + 'dabtimer':
-                    self.send_chat_msg('50 seconds cooldown, be ready to dab!')
-                    threading.Timer(50, self.send_chat_msg, args=['Dab Timer over! Dab and enjoy! Cheers!']).start()
+                elif cmd == prefix + 'dabtimer' or cmd == prefix + 'dt':
+                    if not cmd_arg:
+                        cmd_arg = str(50)
+                    self.send_chat_msg('{0} seconds cooldown, be ready to dab!'.format(cmd_arg))
+                    threading.Timer(int(cmd_arg), self.send_chat_msg, args=['Dab Timer over! Dab and enjoy! Cheers!']).start()
 
                 elif cmd == prefix + 'flip':
                     self.do_flip_coin()
@@ -1641,6 +1645,16 @@ class TinychatBot(pinylib.TinychatRTCClient):
         if self.is_client_mod:
             self.send_banlist_msg()
             self.load_list(nicks=True, accounts=True, strings=True)
+
+
+    def hourlyTim(self):
+        while True:
+            if datetime.now().time().minute == 15:
+                self.send_chat_msg("It's the 15, get ready for the impending 20 in 5 minutes!")
+                while True:
+                    if datetime.now().minute == 20:
+                        self.send_chat_msg("it's the 20 bitches! Dab/Toke now!")
+                        break
 
     def get_privacy_settings(self):
         """ Parse the privacy settings page. """
