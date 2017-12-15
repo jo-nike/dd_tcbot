@@ -437,9 +437,11 @@ class TinychatBot(pinylib.TinychatRTCClient):
                     self.do_dice()
 
                 elif cmd == prefix + 'dabtimer' or cmd == prefix + 'dt':
-                    if not cmd_arg:
+                    if not cmd_arg: #or type(cmd_arg) not in [int,float] or cmd_arg > 120:
                         cmd_arg = str(50)
                     self.send_chat_msg('{0} seconds cooldown, be ready to dab!'.format(cmd_arg))
+                    if int(cmd_arg) > 19:
+                        threading.Timer(int(cmd_arg)-10, self.send_chat_msg, args=['10 seconds left!! Get Ready to party!']).start()
                     threading.Timer(int(cmd_arg), self.send_chat_msg, args=['Dab Timer over! Dab and enjoy! Cheers!']).start()
 
                 elif cmd == prefix + 'flip':
